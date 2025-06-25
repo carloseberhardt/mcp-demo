@@ -58,7 +58,7 @@ A conversational AI agent that connects IBM watsonx.ai models with StepZen's MCP
 
 6. **Run the agent**:
    ```bash
-   uv run python agent.py
+   uv run start
    ```
 
 ### Alternative: Using pip/requirements.txt
@@ -66,8 +66,8 @@ A conversational AI agent that connects IBM watsonx.ai models with StepZen's MCP
 If you prefer traditional pip workflow, you can generate a requirements.txt:
 ```bash
 uv pip compile pyproject.toml -o requirements.txt
-pip install -r requirements.txt
-python agent.py
+pip install -e .
+start
 ```
 
 ## Configuration
@@ -177,18 +177,12 @@ Phoenix tracing is automatically enabled:
 
 ### Debug Mode
 
-To enable debug output, modify `agent.py`:
-```python
-debug=True  # in create_react_agent()
+To enable debug output, set the environment variable:
+```bash
+export LANGCHAIN_VERBOSE=true
 ```
 
-## Development
-
-To modify the agent behavior:
-1. Update prompt files for different personalities/capabilities
-2. Modify `agent.py` for new features
-3. Add new MCP servers in the client configuration
-4. Extend error handling for additional tool types
+This will show detailed LangChain execution information.
 
 ## License
 
