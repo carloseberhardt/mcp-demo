@@ -104,12 +104,14 @@ prompts/cost_optimizer.md
 ### Template Variables
 
 Your prompt files can use template variables:
-- `{current_date}` - Current date in YYYY-MM-DD (Day) format
+- `{{CURRENT_DATE}}` - Current date in YYYY-MM-DD (Day) format
 
 Example:
 ```markdown
-You are a helpful assistant. Today is {current_date}.
+You are a helpful assistant. Today is {{CURRENT_DATE}}.
 ```
+
+**Note**: We use `{{CURRENT_DATE}}` instead of `{current_date}` to avoid conflicts with GraphQL syntax, which uses single braces `{ }` for queries.
 
 ## Model Switching
 

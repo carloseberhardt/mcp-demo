@@ -211,9 +211,9 @@ async def main():
         prompt_template = f.read()
     
     def create_agent():
-        # Format the prompt with current date
+        # Replace template variables with current date
         current_date = datetime.now().strftime("%Y-%m-%d (%A)")
-        formatted_prompt = prompt_template.format(current_date=current_date)
+        formatted_prompt = prompt_template.replace('{{CURRENT_DATE}}', current_date)
         
         return create_react_agent(
             model=model,
