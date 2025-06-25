@@ -13,41 +13,62 @@ A conversational AI agent that connects IBM watsonx.ai models with StepZen's MCP
 
 ## Prerequisites
 
-- Python 3.8+
+- Python 3.13+
+- [uv](https://docs.astral.sh/uv/) for dependency management
 - IBM watsonx.ai account and API key
 - StepZen MCP server endpoint and API key
-- Required Python packages (see requirements.txt)
 
 ## Quick Start
 
-1. **Clone and install dependencies**:
+1. **Install uv** (if not already installed):
+   ```bash
+   # macOS/Linux
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   
+   # Windows
+   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+   
+   # Or with pip
+   pip install uv
+   ```
+
+2. **Clone and install dependencies**:
    ```bash
    git clone <repository-url>
    cd mcp-demo
-   pip install -r requirements.txt
+   uv sync
    ```
 
-2. **Set up environment**:
+3. **Set up environment**:
    ```bash
    cp sample.env .env
    # Edit .env with your actual credentials and configuration
    ```
 
-3. **Create a prompt file**:
+4. **Create a prompt file**:
    ```bash
    mkdir -p prompts
    echo "You are a helpful AI assistant." > prompts/my_agent.md
    ```
 
-4. **Update your .env**:
+5. **Update your .env**:
    ```bash
    AGENT_PROMPT_FILE=my_agent.md
    ```
 
-5. **Run the agent**:
+6. **Run the agent**:
    ```bash
-   python agent.py
+   uv run python agent.py
    ```
+
+### Alternative: Using pip/requirements.txt
+
+If you prefer traditional pip workflow, you can generate a requirements.txt:
+```bash
+uv pip compile pyproject.toml -o requirements.txt
+pip install -r requirements.txt
+python agent.py
+```
 
 ## Configuration
 
