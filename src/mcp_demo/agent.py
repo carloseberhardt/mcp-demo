@@ -100,7 +100,7 @@ async def get_tools():
             "stepzen": {
                 "url": os.environ["STEPZEN_MCP_URL"],
                 "transport": "streamable_http",
-                "headers": {"Authorization": os.environ["STEPZEN_API_KEY"]},
+                "headers": {"Authorization": f"Bearer {os.environ['STEPZEN_JWT_TOKEN']}"},
             }
         }
     )

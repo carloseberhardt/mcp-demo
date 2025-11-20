@@ -1,5 +1,6 @@
 import os
 from langchain_ibm import ChatWatsonx
+from ibm_watsonx_ai import APIClient, Credentials
 
 def get_agent_name_from_prompt_file(prompt_file):
     """Convert prompt filename to agent name - supports multiple formats"""
@@ -25,7 +26,35 @@ def get_agent_name_from_prompt_file(prompt_file):
     
     return agent_name
 
-def get_available_models():
+def get_available_models_from_api():
+    """Query watsonx.ai API for available models that support tool calling"""
+    try:
+        credentials = Credentials(
+            url=os.environ["WATSONX_URL"],
+            api_key=os.environ["WATSONX_API_KEY"],
+        )
+        client = APIClient(credentials)
+
+        # Get model specs filtered by tool calling support
+        model_specs = client.foundation_models.get_model_specs(
+            filters="task_function_calling"
+        )
+
+        # Extract model IDs from the specs
+        models = []
+        if model_specs and 'resources' in model_specs:
+            for spec in model_specs['resources']:
+                model_id = spec.get('model_id')
+                if model_id:
+                    models.append(model_id)
+
+        return sorted(models)
+    except Exception as e:
+        print(f"⚠️  Warning: Could not fetch models from API: {e}")
+        # Fallback to .env file parsing
+        return get_available_models_from_env()
+
+def get_available_models_from_env():
     """Parse available models from .env file (both commented and uncommented WATSONX_MODELNAME lines)"""
     models = []
     try:
@@ -44,6 +73,10 @@ def get_available_models():
     except FileNotFoundError:
         pass
     return models
+
+def get_available_models():
+    """Get available models - tries API first, falls back to .env file"""
+    return get_available_models_from_api()
 
 def get_current_model():
     """Get the currently active model from environment"""

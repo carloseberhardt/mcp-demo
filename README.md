@@ -16,7 +16,7 @@ A conversational AI agent that connects IBM watsonx.ai models with StepZen's MCP
 - Python 3.13+
 - [uv](https://docs.astral.sh/uv/) for dependency management
 - IBM watsonx.ai account and API key
-- StepZen MCP server endpoint and API key
+- StepZen MCP server endpoint and JWT token
 
 ## Quick Start
 
@@ -77,7 +77,7 @@ start
 | Variable | Required | Description | Default |
 |----------|----------|-------------|---------|
 | `STEPZEN_MCP_URL` | Yes | Your StepZen MCP endpoint URL | - |
-| `STEPZEN_API_KEY` | Yes | Your StepZen API key | - |
+| `STEPZEN_JWT_TOKEN` | Yes | Your StepZen JWT token (sent as Bearer token) | - |
 | `WATSONX_API_KEY` | Yes | IBM watsonx.ai API key | - |
 | `WATSONX_PROJECT_ID` | Yes | IBM watsonx.ai project ID | - |
 | `WATSONX_URL` | Yes | IBM watsonx.ai service URL | - |
@@ -87,12 +87,14 @@ start
 
 ### Supported Models
 
-The agent supports various watsonx.ai models including:
-- **Mistral**: `mistralai/mistral-large`, `mistralai/mistral-medium-2505`
-- **IBM Granite**: `ibm/granite-3-3-8b-instruct`
-- **Meta Llama**: `meta-llama/llama-3-3-70b-instruct`
+The agent **dynamically discovers** available models from the watsonx.ai API that support tool calling. When you use the `/switch` command, the agent queries the API for the current list of models with `task_function_calling` capability.
 
-See `sample.env` for the complete list.
+Common models include:
+- **Mistral**: `mistralai/mistral-large`, `mistralai/mistral-medium-2505`
+- **IBM Granite**: `ibm/granite-3-3-8b-instruct`, `ibm/granite-3-2b-instruct`
+- **Meta Llama**: `meta-llama/llama-3-3-70b-instruct`, `meta-llama/llama-3-1-8b-instruct`
+
+If the API query fails, it falls back to parsing models from your `.env` file.
 
 ## Usage
 
@@ -138,10 +140,12 @@ You are a helpful assistant. Today is {{CURRENT_DATE}}.
 
 The `/switch` command allows you to change models during conversation:
 
-1. Lists all models found in your `.env` file (both active and commented)
-2. Shows which model is currently active
+1. **Queries the watsonx.ai API** for all available models that support tool calling
+2. Lists the models with the currently active one marked
 3. Switches to the selected model
 4. **Note**: Conversation history is reset when switching models
+
+If the API is unavailable, it falls back to listing models from your `.env` file (both active and commented lines).
 
 ## Error Handling
 

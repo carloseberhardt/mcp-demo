@@ -1,16 +1,84 @@
+# Environment files - CRITICAL: Never commit credentials!
+.env
+.env.local
+.env.*.local
+*.env
+
 # Python-generated files
 __pycache__/
-*.py[oc]
+*.py[cod]
+*$py.class
+*.so
 build/
 dist/
 wheels/
 *.egg-info
+*.egg
+.eggs/
 
 # Virtual environments
 .venv
-# serena
+venv/
+ENV/
+env/
 .serena
 
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+*.sublime-project
+*.sublime-workspace
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+
+# Type checking
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# Documentation builds
+docs/_build/
+site/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Phoenix tracing data
+.phoenix/
+phoenix.db
+
+# Package manager files
+pip-log.txt
+pip-delete-this-directory.txt
+*.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Project-specific
 notes.md
-.env
 CLAUDE.md
+
+# Logs
+*.log
+logs/
+
+# Backup files
+*.bak
+*.backup
